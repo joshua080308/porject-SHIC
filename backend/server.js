@@ -1,12 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { OpenAIApi } = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 
 // OpenAI API 설정
-const openai = new OpenAIApi({
+const configuration = new Configuration({
   apiKey: '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',
 });
+const openai = new OpenAIApi(configuration);
 
 const app = express();
 app.use(cors());
@@ -54,3 +55,4 @@ app.post('/analyze', async (req, res) => {
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
