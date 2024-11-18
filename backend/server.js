@@ -5,7 +5,7 @@ const { Configuration, OpenAIApi } = require('openai');
 
 // OpenAI API 설정
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: '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',
 });
 const openai = new OpenAIApi(configuration);
 
