@@ -32,15 +32,15 @@ app.post('/analyze', async (req, res) => {
         {
           role: 'user',
           content: `Analyze the following sentence in detail. Return the analysis in JSON format with the following keys:
-        - "subject": The subject of the sentence.
-        - "verb": The main verb of the sentence.
-        - "object": The object of the sentence (if applicable).
-        - "clauses": List of any clauses in the sentence.
-        - "phrases": Breakdown of noun phrases, verb phrases, and adjective phrases.
-        - "sentence_type": The type of the sentence (e.g., declarative, interrogative, imperative, exclamatory).
-        - "notes": Additional notes on grammar or structure.
+          - "subject": The subject of the sentence.
+          - "verb": The main verb of the sentence.
+          - "object": The object of the sentence (if applicable).
+          - "clauses": List of any clauses in the sentence.
+          - "phrases": Breakdown of noun phrases, verb phrases, and adjective phrases.
+          - "sentence_type": The type of the sentence (e.g., declarative, interrogative, imperative, exclamatory).
+          - "notes": Additional notes on grammar or structure.
 
-        Sentence: "${text}"`,
+          Sentence: "${text}"`,
         },
       ],
     });

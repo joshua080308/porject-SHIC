@@ -44,15 +44,14 @@
         document.getElementById('analyzeButton').addEventListener('click', async () => {
             const inputText = document.getElementById('inputText').value;
             const outputText = document.getElementById('outputText');
-            
+
             if (!inputText.trim()) {
                 outputText.value = "Please enter a sentence to analyze.";
                 return;
             }
 
             try {
-                // 서버로 요청 보내기
-                const response = await fetch('http://localhost:3000/analyze', { // 백엔드 엔드포인트
+                const response = await fetch('http://localhost:3000/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -65,21 +64,7 @@
                 }
 
                 const data = await response.json();
-                const analysis = JSON.parse(data.analysis); // JSON 파싱
-
-                // 분석 결과 출력
-                outputText.value = `
-Subject: ${analysis.subject}
-Verb: ${analysis.verb}
-Object: ${analysis.object || "None"}
-Clauses: ${analysis.clauses.join(", ")}
-Phrases:
-  - Noun phrases: ${analysis.phrases.noun_phrases.join(", ")}
-  - Verb phrases: ${analysis.phrases.verb_phrases.join(", ")}
-  - Adjective phrases: ${analysis.phrases.adjective_phrases.join(", ")}
-Sentence type: ${analysis.sentence_type}
-Notes: ${analysis.notes}
-                `;
+                outputText.value = data.analysis;
             } catch (error) {
                 console.error('Error:', error);
                 outputText.value = "An error occurred while analyzing the sentence.";
