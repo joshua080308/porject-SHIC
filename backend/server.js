@@ -1,13 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAIApi } = require('openai');
 
-// OpenAI API 키 설정
-const configuration = new Configuration({
+// OpenAI API 설정
+const openai = new OpenAIApi({
   apiKey: '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',
 });
-const openai = new OpenAIApi(configuration);
 
 const app = express();
 app.use(cors());
@@ -32,15 +31,15 @@ app.post('/analyze', async (req, res) => {
         {
           role: 'user',
           content: `Analyze the following sentence in detail. Return the analysis in JSON format with the following keys:
-          - "subject": The subject of the sentence.
-          - "verb": The main verb of the sentence.
-          - "object": The object of the sentence (if applicable).
-          - "clauses": List of any clauses in the sentence.
-          - "phrases": Breakdown of noun phrases, verb phrases, and adjective phrases.
-          - "sentence_type": The type of the sentence (e.g., declarative, interrogative, imperative, exclamatory).
-          - "notes": Additional notes on grammar or structure.
+        - "subject": The subject of the sentence.
+        - "verb": The main verb of the sentence.
+        - "object": The object of the sentence (if applicable).
+        - "clauses": List of any clauses in the sentence.
+        - "phrases": Breakdown of noun phrases, verb phrases, and adjective phrases.
+        - "sentence_type": The type of the sentence (e.g., declarative, interrogative, imperative, exclamatory).
+        - "notes": Additional notes on grammar or structure.
 
-          Sentence: "${text}"`,
+        Sentence: "${text}"`,
         },
       ],
     });
@@ -53,6 +52,5 @@ app.post('/analyze', async (req, res) => {
   }
 });
 
-const PORT = 3000; // 포트를 원하는 대로 변경 가능
+const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
