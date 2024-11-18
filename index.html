@@ -36,17 +36,54 @@
         <div class="cool-header">Sentence Analysis Tool</div>
         <textarea id="inputText" class="w-full p-2 border border-gray-300 rounded mb-4" rows="4" placeholder="Enter your sentence here..."></textarea>
         <button id="analyzeButton" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Analyze Sentence</button>
-        <p class="text-gray-600 mt-4">When you click this button, the results of a detailed analysis of the sentence components of the English sentence in the text box above are output in the text box below.</p>
-        <textarea id="outputText" class="w-full p-2 border border-gray-300 rounded mt-4" rows="4" placeholder="Analysis results will appear here..." readonly></textarea>
+        <p class="text-gray-600 mt-4">Click the button to analyze the sentence. The results will appear below.</p>
+        <textarea id="outputText" class="w-full p-2 border border-gray-300 rounded mt-4" rows="10" placeholder="Analysis results will appear here..." readonly></textarea>
     </div>
 
-    <script type="module">
-        document.getElementById('analyzeButton').addEventListener('click', () => {
+    <script>
+        document.getElementById('analyzeButton').addEventListener('click', async () => {
             const inputText = document.getElementById('inputText').value;
             const outputText = document.getElementById('outputText');
             
-            // Simulate grammatical analysis (replace with actual analysis logic)
-            outputText.value = `Analysis of: "${inputText}"\n\n- Subject: Example Subject\n- Verb: Example Verb\n- Object: Example Object`;
+            if (!inputText.trim()) {
+                outputText.value = "Please enter a sentence to analyze.";
+                return;
+            }
+
+            try {
+                // 서버로 요청 보내기
+                const response = await fetch('http://localhost:3000/analyze', { // 백엔드 엔드포인트
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: inputText }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to analyze the sentence');
+                }
+
+                const data = await response.json();
+                const analysis = JSON.parse(data.analysis); // JSON 파싱
+
+                // 분석 결과 출력
+                outputText.value = `
+Subject: ${analysis.subject}
+Verb: ${analysis.verb}
+Object: ${analysis.object || "None"}
+Clauses: ${analysis.clauses.join(", ")}
+Phrases:
+  - Noun phrases: ${analysis.phrases.noun_phrases.join(", ")}
+  - Verb phrases: ${analysis.phrases.verb_phrases.join(", ")}
+  - Adjective phrases: ${analysis.phrases.adjective_phrases.join(", ")}
+Sentence type: ${analysis.sentence_type}
+Notes: ${analysis.notes}
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                outputText.value = "An error occurred while analyzing the sentence.";
+            }
         });
     </script>
 </body>
