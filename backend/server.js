@@ -1,13 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
 
 // OpenAI API 설정
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: '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',
 });
-const openai = new OpenAIApi(configuration);
 
 const app = express();
 app.use(cors());
@@ -22,8 +21,8 @@ app.post('/analyze', async (req, res) => {
   }
 
   try {
-    const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4', // GPT-4 모델을 사용
       messages: [
         {
           role: 'system',
@@ -45,7 +44,7 @@ app.post('/analyze', async (req, res) => {
       ],
     });
 
-    const analysis = response.data.choices[0].message.content;
+    const analysis = response.choices[0].message.content;
     res.send({ analysis });
   } catch (error) {
     console.error('Error calling OpenAI API:', error);
@@ -54,4 +53,4 @@ app.post('/analyze', async (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:3000`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
