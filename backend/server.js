@@ -5,7 +5,7 @@ const { OpenAI } = require('openai');
 
 // OpenAI API 설정
 const openai = new OpenAI({
-  apiKey: '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',
+  apiKey: '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',
 });
 
 const app = express();
